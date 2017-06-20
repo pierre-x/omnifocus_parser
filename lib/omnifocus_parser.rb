@@ -11,6 +11,7 @@ module OmnifocusParser
       xml_doc = REXML::Document.new xml_file
       xml_doc.elements.each("omnifocus/task") do |task|
           description = task.elements['name'].first.value
+          next if !task.elements['completed']&.first.nil? # skip completed task
        #   puts description
           child_id = task.attributes['id']
        #   puts "this:   #{child_id}"

@@ -20,7 +20,30 @@ Then execute:
 
 ## Usage
 
-TODO: Write usage instructions here
+create a sample file test.rb:
+
+```ruby
+require "omnifocus_parser"
+
+class OmnifocusParserTest 
+  
+  include OmnifocusParser
+
+# contents.xml is not commited yet, because it contains my personnal TODO list
+  def show_a_simple_parse
+         self.xml_file= File.new('contents.xml')
+         self.tree.root_nodes.each{|node| disp_node(node,0)}
+  end       
+         
+end
+
+parser = OmnifocusParserTest.new
+parser.show_a_simple_parse
+```
+
+Then execute:
+
+    $ bundle exec ruby test.rb
 
 ## Development
 

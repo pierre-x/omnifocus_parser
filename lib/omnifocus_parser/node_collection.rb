@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 require 'omnifocus_parser/node'
 
 class NodeCollection
@@ -33,8 +32,10 @@ class NodeCollection
     node
   end
 
-=======
+  def get_root_node
+    @nodes.each do |node|
+      return node if node.node_id == 'ROOT'
+    end
+  end
 
-class NodeCollection
->>>>>>> c8861d0f554567e1c6878bd5edd506f2d9806800
 end

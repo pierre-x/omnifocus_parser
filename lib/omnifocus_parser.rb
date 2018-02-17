@@ -1,15 +1,14 @@
 require 'omnifocus_parser/version'
-require 'omnifocus_parser/tree' # TODO old method, delete
 require 'omnifocus_parser/node_collection'
 require 'rexml/document'
 require 'rgl/adjacency'
-require 'rgl/dot' # to get a visual representation
+require 'rgl/traversal'
+require 'rgl/dot'
 
 module OmnifocusParser
-  attr_accessor :tree
+  attr_accessor :graph
 
   def xml_file=(xml_file)
-    @tree = Tree.new # TODO old method, delete
     @graph = RGL::DirectedAdjacencyGraph.new
     @nodes = NodeCollection.new
 
@@ -27,26 +26,17 @@ module OmnifocusParser
         parent_task_id = 'ROOT'
       end
 
-      # append to the tree
-      tree.add_node(description, node_id, parent_task_id) # TODO old method, delete
+      # append the new node to the graph
+      #puts "node_id : #{node_id}"
+      #puts "parent_node : #{parent_task_id}"
       node        = @nodes.create_node node_id, description
       parent_node = @nodes.get_node_by_id parent_task_id
-
       @graph.add_edge parent_node, node
     end
-
-    @graph.print_dotted_on # output a dot representation
-
-    tree.compute_graph!
   end # def xml_file=
 
-  def disp_node(node, level)
-    # return # FIXME remove, for debug only
-    level.times{print ' '}
-  #  puts "- #{node.description}"
-    node.children_nodes.each do |child|
-      disp_node(child, level+3)
-    end
+  def get_root_node
+    @nodes.get_root_node
   end
 
 end

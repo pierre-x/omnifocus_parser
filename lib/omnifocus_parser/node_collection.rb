@@ -1,0 +1,3 @@
+
+class NodeCollection
+end

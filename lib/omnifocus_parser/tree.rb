@@ -2,7 +2,7 @@
 
 # This tree management is not optimised at all, but is a fast, quick, and dirty implementation that works!
 
-class Node
+class NodeOld
     attr_accessor :description
     attr_accessor :xml_id
     attr_accessor :xml_parent_id
@@ -31,7 +31,7 @@ class Tree
     end
     
     def add_node(description, xml_id, xml_parent_id)
-        @nodes << Node.new(description, xml_id, xml_parent_id)        
+        @nodes << NodeOld.new(description, xml_id, xml_parent_id)
     end
     
     # create the link between nodes using xml_id and xml_parent_id

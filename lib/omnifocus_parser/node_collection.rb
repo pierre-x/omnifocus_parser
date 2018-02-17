@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 require 'omnifocus_parser/node'
 
 class NodeCollection
@@ -32,4 +33,8 @@ class NodeCollection
     node
   end
 
+=======
+
+class NodeCollection
+>>>>>>> c8861d0f554567e1c6878bd5edd506f2d9806800
 end

@@ -23,7 +23,6 @@ class OmnifocusParserTest < Minitest::Test
     puts "- #{node.text}"
     self.graph.each_adjacent node do |adj_node|
       disp_node adj_node, depth+1
-  #   disp_node node
     end
   end
 

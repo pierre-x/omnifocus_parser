@@ -36,7 +36,7 @@ class NodeCollection
     node.name = name unless name.nil?
     node.note = note unless note.nil?
 
-    p node
+#    p node
 
     node
   end

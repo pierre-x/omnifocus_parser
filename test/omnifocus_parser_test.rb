@@ -3,7 +3,7 @@ require 'sqlite3'
 
 
 class OmnifocusParserTest < Minitest::Test
-  
+
   include OmnifocusParser
 
   def test_that_it_has_a_version_number
@@ -13,7 +13,7 @@ class OmnifocusParserTest < Minitest::Test
 # TODO make better test
 # contents.xml is not commited yet, because it contains my personnal TODO list
   def test_show_a_simple_parse
-    @rank = 1
+    @rank = 0
 
     self.xml_file= File.new('test/contents.xml')
 
@@ -27,11 +27,13 @@ class OmnifocusParserTest < Minitest::Test
     # Create a table
     rows = db.execute <<-SQL
       create table tasks (
-        id INTEGER PRIMARY KEY NOT NULL,
-        name TEXT NOT NULL,
-        note TEXT,
-        rank INTEGER,
-        parent INTEGER,
+        id             INTEGER PRIMARY KEY NOT NULL,
+        name           TEXT NOT NULL,
+        note           TEXT,
+        rank           INTEGER,
+        parent         INTEGER,
+        splitable      BOOLEAN,
+        remaining_time INTEGER,
         FOREIGN KEY(parent) REFERENCES tasks(id)
       );
     SQL
@@ -71,7 +73,9 @@ class OmnifocusParserTest < Minitest::Test
       rank  = 0
     end
 
-    db.execute 'INSERT INTO tasks(name, note, rank, parent) VALUES (?,?,?,?)', node.name, node.note, rank, parent
+    node.note='' if node.note.nil?
+    # p rank if rank.nil?
+    db.execute 'INSERT INTO tasks(name, note, rank, parent, splitable, remaining_time) VALUES (?,?,?,?,"false",0)', node.name, node.note, rank, parent
     self.graph.each_adjacent node do |adj_node|
       insert_node_in_db db, adj_node, db.last_insert_row_id
     end

@@ -5,6 +5,8 @@ require 'rgl/adjacency'
 require 'rgl/traversal'
 require 'rgl/dot'
 
+# TODO il faut virer tout les <task/>
+
 module OmnifocusParser
   attr_accessor :graph
 
@@ -13,10 +15,11 @@ module OmnifocusParser
     @nodes = NodeCollection.new
 
     xml_doc = REXML::Document.new xml_file
-    xml_doc.elements.each("omnifocus/task") do |task|
+    xml_doc.elements.each('omnifocus/task') do |task|
+
       next if !task.elements['completed']&.first.nil? # skip completed task
       description = task.elements['name'].first.value # get description TODO rename to text
-                                                      # TODO also get associated comments
+      note        = task.elements['note']&.first # TODO also get associated note
       node_id     = task.attributes['id']             # get node id
       parent_task = task.elements['task']             # get parent task
       if parent_task # check if the task has a parent or is a root project
@@ -29,7 +32,7 @@ module OmnifocusParser
       # append the new node to the graph
       #puts "node_id : #{node_id}"
       #puts "parent_node : #{parent_task_id}"
-      node        = @nodes.create_node node_id, description
+      node        = @nodes.create_node node_id, description, note
       parent_node = @nodes.get_node_by_id parent_task_id
       @graph.add_edge parent_node, node
     end
@@ -37,6 +40,10 @@ module OmnifocusParser
 
   def get_root_node
     @nodes.get_root_node
+  end
+
+  def is_node_a_leaf?(node)
+    graph.adjacent_vertices(node).count == 0
   end
 
 end

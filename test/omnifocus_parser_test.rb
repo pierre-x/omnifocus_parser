@@ -66,7 +66,7 @@ class OmnifocusParserTest < Minitest::Test
     @count = @count + 1
     if self.is_node_a_leaf?(node)
       @rank = @rank+1
-      rank  = rank
+      rank  = @rank
     else
       rank  = 0
     end
